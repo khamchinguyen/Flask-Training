@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, jsonify, request
 from matplotlib import rc_params_from_file
 
@@ -18,7 +19,7 @@ stores = [
 # @app.route('/')
 
 # POST /store data: {name:}
-@app.route('/store', method=['POST'])
+@app.route('/store', methods=['POST'])
 def create_store():
     request_data = request.get_json()
     new_store = {
@@ -38,11 +39,11 @@ def get_store(name):
 
 # GET /store
 @app.route("/store")
-def get_store():
+def get_stores():
     return jsonify({'store': stores})
    
 # POST /store/<string:name>/item {name:, price:}
-@app.route("/store/<string:name>/item", method=["POST"])
+@app.route("/store/<string:name>/item", methods=["POST"])
 def create_item_in_store(name):
     request_data = request.get_json()
     for store in stores:
