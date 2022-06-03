@@ -1,6 +1,4 @@
-from crypt import methods
 from flask import Flask, jsonify, request
-from matplotlib import rc_params_from_file
 
 app = Flask(__name__)
 
