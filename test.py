@@ -1,7 +1,7 @@
-from operator import attrgetter
+# def double(x):
+#     return x * 2
 
-
-student_attendance = {"Rolf": 96, "Bob": 80, "Anne": 100}
-
-for student, attendance in student_attendance.items():
-    print(f"{student}: {attendance}") 
+sequence = [1, 3, 5, 9]
+doubled = [(lambda x: x * 2)(x) for x in sequence]
+doubled = list(map(lambda x: x * 2, sequence))
+print(doubled)
