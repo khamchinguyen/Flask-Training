@@ -5,14 +5,16 @@ class ClassroomModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    teacher = db.Column(db.String(80))
 
     students = db.relationship('StudentModel', lazy='dynamic')
 
-    def __init__(self, name):
+    def __init__(self, name, teacher):
         self.name = name
+        self.teacher = teacher
 
     def json(self):
-        return {'name': self.name, 'student': [student.json() for student in self.students.all()]}
+        return {'name': self.name, 'teacher': self.teacher, 'student': [student.json() for student in self.students.all()]}
 
     @classmethod
     def find_by_name(cls, name):

@@ -5,7 +5,7 @@ from models.student import StudentModel
 class Student(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('major',
-        type=String,
+        type=str,
         required=True,
         help="Every student needs a major"
     )
@@ -48,12 +48,12 @@ class Student(Resource):
 
         if student:
             student.price = data['price']
+            student.class_id = data['class_id']
         else:
             item = StudentModel(name, **data)
         
         item.save_to_db()
         return item.json()
-
 
 class StudentList(Resource):
     def get(self):

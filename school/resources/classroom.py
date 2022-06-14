@@ -1,7 +1,14 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from models.classroom import ClassroomModel
 
 class Classroom(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('teacher',
+        type=str,
+        required=True,
+        help="Every class needs a teacher."
+    )
+    
     def get(self, name):
         classroom = ClassroomModel.find_by_name(name)
         if classroom:
@@ -12,7 +19,9 @@ class Classroom(Resource):
         if ClassroomModel.find_by_name(name):
             return {'message': "A classroom with name '{}' already exists.".format(name)}, 400
 
-        classroom = ClassroomModel(name)
+        data = Classroom.parser.parse_args()
+
+        classroom = ClassroomModel(name, **data)
         try:
             classroom.save_to_db()
         except:
@@ -25,6 +34,18 @@ class Classroom(Resource):
         if classroom:
             classroom.delete_from_db()
         return {'message': 'Classroom deleted'}
+
+    def put(self, name):
+        data = Classroom.parser.parse_args()
+        classroom = Classroom.find_by_name(name)
+
+        if classroom:
+            classroom.teacher = data['teacher']
+        else:
+            item = ClassroomModel(name, **data)
+        
+        item.save_to_db()
+        return item.json()
 
 class ClassroomList(Resource):
     def get(self):
